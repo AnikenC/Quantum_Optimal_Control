@@ -6,7 +6,6 @@ import numpy as np
 from rl_qoc.helper_functions import (
     generate_default_instruction_durations_dict,
     select_backend,
-    get_q_env_config,
     load_q_env_from_yaml_file,
 )
 from qiskit import QuantumCircuit, QuantumRegister, transpile
@@ -40,7 +39,6 @@ def apply_parametrized_circuit(
     target = kwargs["target"]
     my_qc = QuantumCircuit(q_reg, name=f"{target['gate'].name}_cal")
     optimal_params = np.pi * np.array([0.0, 0.0, 0.5, 0.5, -0.5, 0.5, -0.5])
-    # optimal_params = np.pi * np.zeros(len(params))
 
     my_qc.u(
         optimal_params[0] + params[0],
@@ -99,14 +97,6 @@ def get_backend_parametrised(
         solver_options,
         calibration_files,
     )
-
-    ### Random noise with Kraus operators ###
-    # dim = 4  # For a 4x4 system (e.g., 2 qubits)
-    # num_ops = 3  # Number of Kraus operators
-    # epsilon = 0.01  # Noise strength parameter
-    # kraus_ops_eps = generate_random_cptp_map(dim, num_ops, epsilon)
-    # noise_model = NoiseModel()
-    # noise_model.add_all_qubit_quantum_error(kraus_ops_eps, ['rzx'])
 
     ### Custom spillover noise model ###
     global custom_rx_gate_label
